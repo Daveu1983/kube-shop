@@ -8,7 +8,7 @@ class App extends Component {
   state = {
     products:[]
   }
-  componentDidMount() {
+  componentWillMount() {
     this.getProducts();
   }
   
