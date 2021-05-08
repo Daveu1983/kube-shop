@@ -2,9 +2,6 @@ const express = require('express')
 const app = express()
 const log4js = require("log4js")
 const port = 8001
-const cors = require('cors');
-
-app.use(cors());
 
 log4js.configure({
     appenders: {'out': {type: 'stdout'}},
