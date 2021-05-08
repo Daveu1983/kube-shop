@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
 import './App.css';
 import Products from './components/Products'
+import axios from "axios";
 
 class App extends Component {
 
   state = {
-    products:[
-      {title: "t-shirt", description: "funky and loud", price: 5, quantity: 0, size: "L", colour: "black"},
-      {title: "jumper", description: "plain pattern", price: 10, quantity: 0, size: "XL", colour: "white"},
-      {title: "jeans", description: "straight denim", price: 15, quantity: 0, size: "34W30L", colour: "blue"},
-      {title: "polo shirt", description: "plain", price: 5, quantity: 0, size: "S", colour: "black"}
-    ]
+    products:[]
+  }
+  componentDidMount() {
+    this.getProducts();
+  }
+  
+  getProducts(){
+    axios.get('/api')
+      .then(response => {
+      var recProducts = response.data;
+       this.setState({products:recProducts})
+       })
+       .catch(function (error) {
+       console.log(error);
+       })
   }
 
   render(){
