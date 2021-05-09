@@ -3,6 +3,10 @@ import '../App.css';
 
 class Products extends Component {
 
+  addToOrder = () => {
+    this.props.addToOrderFunction(this.props.title, this.props.price, this.props.quantity, this.props.size, this.props.colour);
+  };
+
   render(){
     return (
       <div className="container">  
@@ -19,6 +23,8 @@ class Products extends Component {
                 <ul>quantity: {this.props.quantity}</ul>
                 <ul>size: {this.props.size}</ul>
                 <ul>colour: {this.props.colour}</ul>
+                <ul><button className="btn btn-secondary"  
+                    type="button"onClick={this.addToOrder}>add to order</button></ul>
             </div>
             <div>-----------------------------------------------------------------------------------------------------------------------------------------------------------------
                   -----------------------------------------------------------

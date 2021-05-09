@@ -13,7 +13,7 @@ log4js.configure({
 const logger = log4js.getLogger()
 
 
-var products = [
+let products = [
     {title: "t-shirt", description: "funky and loud", price: 5, quantity: 0, size: "L", colour: "black"},
     {title: "jumper", description: "plain pattern", price: 10, quantity: 0, size: "XL", colour: "white"},
     {title: "jeans", description: "straight denim", price: 15, quantity: 0, size: "34W30L", colour: "blue"},
@@ -35,7 +35,7 @@ const getPrices = (oldPrices)=>{
 }  
 
 app.get('/api', (req,res) =>{ 
-    var currentPrices = getPrices(products)
+    let currentPrices = getPrices(products)
     res.send(currentPrices)
     logger.info('sent product to UI')
 })

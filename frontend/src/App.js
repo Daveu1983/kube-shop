@@ -6,7 +6,8 @@ import axios from "axios";
 class App extends Component {
 
   state = {
-    products:[]
+    products:[],
+    orders:[]
   }
   componentWillMount() {
     this.getProducts();
@@ -15,7 +16,7 @@ class App extends Component {
   getProducts(){
     axios.get('/api')
       .then(response => {
-      var recProducts = response.data;
+      let recProducts = response.data;
        this.setState({products:recProducts})
        })
        .catch(function (error) {
@@ -23,7 +24,16 @@ class App extends Component {
        })
   }
 
-  render(){
+  addToOrder= (title, price, quantity, size, colour)=>{
+    const newOrder = this.state.orders.map((order)=>{
+      return order
+    })
+    //const newOrder = []
+    newOrder.push({title: title, price: price, quantity: quantity, size: size, colour: colour})
+    this.setState({orders:newOrder})
+  }
+
+  render(){ 
     return (
       <div>
 
@@ -36,7 +46,8 @@ class App extends Component {
         price={element.price}
         quantity={element.quantity}
         size={element.size}
-        colour={element.colour}/>
+        colour={element.colour}
+        addToOrderFunction={this.addToOrder}/>
         })
       }
       </div>
