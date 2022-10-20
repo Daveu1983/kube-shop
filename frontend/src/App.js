@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 import Products from './components/Products'
+import Orders from './components/Orders';
 import axios from "axios";
 
 class App extends Component {
 
   state = {
     products:[],
-    orders:[]
+    orders:[],
+    truee: true
   }
   componentWillMount() {
     this.getProducts();
@@ -36,19 +38,36 @@ class App extends Component {
   render(){ 
     return (
       <div>
-
       {
-      this.state.products.map((element, index)=>{
-        return  <Products 
-        key={index}
-        title={element.title}
-        description={element.description}
-        price={element.price}
-        quantity={element.quantity}
-        size={element.size}
-        colour={element.colour}
-        addToOrderFunction={this.addToOrder}/>
-        })
+        this.state.products.map((element, index)=>{
+          return  <Products 
+          key={index}
+          title={element.title}
+          description={element.description}
+          price={element.price}
+          quantity={element.quantity}
+          size={element.size}
+          colour={element.colour}
+          addToOrderFunction={this.addToOrder}/>
+          })
+      } 
+      <div>
+        <h2>ORDERS</h2>
+        <p>-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                  -----------------------------------------------------------</p>
+      </div>
+
+
+      { 
+        this.state.orders.map((element, index)=>{
+          return  <Orders
+          key={index}
+          title={element.title}
+          price={element.price}
+          quantity={element.quantity}
+          size={element.size}
+          colour={element.colour}/>
+          })
       }
       </div>
     );
