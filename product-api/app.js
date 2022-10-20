@@ -21,7 +21,7 @@ let products = [
   ]
 const getPrices = (oldPrices)=>{
     oldPrices.forEach(element => {
-    axios.get(`http://localhost:5000/api?price=${element.price}`)
+    axios.get(`http://localhost:5000/api?price=${element.price}&title=${element.title}`)
         .then(response => {
             console.log(response.data.price)
             element.price = response.data.price
