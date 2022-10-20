@@ -4,3 +4,4 @@ currently \
 Frontend - react app \
 product-api - nodejs express app \
 pricing-api - python flask app \
+account-api - java spring boot app \
