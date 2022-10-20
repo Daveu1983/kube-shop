@@ -3,6 +3,8 @@ import './App.css';
 import Products from './components/Products'
 import Orders from './components/Orders';
 import axios from "axios";
+import AddAccount from './components/AddAccount';
+import Login from './components/Login';
 
 class App extends Component {
 
@@ -38,6 +40,12 @@ class App extends Component {
   render(){ 
     return (
       <div>
+        <div>
+          <AddAccount />
+        <div>
+          <Login />
+        </div>
+      </div>
       {
         this.state.products.map((element, index)=>{
           return  <Products 
