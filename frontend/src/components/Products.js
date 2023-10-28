@@ -19,7 +19,7 @@ class Products extends Component {
                 {this.props.description}
             </div>
             <div className="col-4">
-                <ul>price: £{this.props.price}</ul>
+                <ul>price: £{this.props.price.toFixed(2)}</ul>
                 <ul>quantity: {this.props.quantity}</ul>
                 <ul>size: {this.props.size}</ul>
                 <ul>colour: {this.props.colour}</ul>

@@ -9,50 +9,71 @@ import (
 )
 
 type Product struct {
-	title string
-	description string
-	price float64
-	quantity int
+	Title string `json:"title"`
+	Description string `json:"description"`
+	Price float64 `json:"price"`
+	Quantity int `json:"quantity"`
+	Size string `json:"size"`
+	Colour string `json:"colour"`
 }
 
 
 func main () {
-	product1 := Product {
-		title: "t-shirt",
-		description: "funky and loud",
-		price: 5,
-		quantity: 0,
+	productArray := [] Product{
+		{
+			Title: "t-shirt",
+			Description: "funky and loud",
+			Price: 5,
+			Quantity: 0,
+			Size: "XL",
+			Colour: "blue",
+		},
+		{
+			Title: "jumper",
+			Description: "plain pattern",
+			Price: 10,
+			Quantity: 0,
+			Size: "L",
+			Colour: "white",
+		},
+		{
+			Title: "jeans",
+			Description: "straight denim",
+			Price: 15,
+			Quantity: 0,
+			Size: "32L30W",
+			Colour: "red",
+		},
+		{
+			Title: "polo shirt",
+			Description: "plain",
+			Price: 7,
+			Quantity: 0,
+			Size: "small",
+			Colour: "purple",
+		},
 	}
-	product2 := Product {
-		title: "jumper",
-		description: "plain pattern",
-		price: 10,
-		quantity: 0,
-	}
-	product3 := Product {
-		title: "jeans",
-		description: "straight denim",
-		price: 15,
-		quantity: 0,
-	}
-	product4 := Product {
-		title: "polo shirt",
-		description: "plain",
-		price: 7,
-		quantity: 0,
-	}
-	productArray := [] Product{product1, product2, product3, product4}
-	getPrices(productArray)
-	
+
+	http.HandleFunc("/api",func(w http.ResponseWriter, r *http.Request){
+		productArray := getPrices(productArray)
+		jsonProduct, err := json.Marshal(productArray)
+		if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+		w.Header().Set("Content-Type", "application/json") 
+		w.Write(jsonProduct)	
+	})
+	http.ListenAndServe(":8001", nil)
 }
 
 func getPrices(productArray []Product) []Product {
 	new_price := 0
 	apiURL := "http://localhost:5000/api"
-	for _, product := range productArray {
+	for index, product := range productArray {
 		params := url.Values{
-			"title": {fmt.Sprintf("%s",product.title)},
-			"price": {fmt.Sprintf("%f",product.price)},
+			"title": {fmt.Sprintf("%s",product.Title)},
+			"price": {fmt.Sprintf("%f",product.Price)},
 		}
 
 		fullURL := apiURL + "?" + params.Encode()
@@ -62,6 +83,7 @@ func getPrices(productArray []Product) []Product {
             fmt.Printf("Error for product: %v - %v\n", product, err)
             continue
         }
+		
         defer response.Body.Close()
 
         responseBody, err := ioutil.ReadAll(response.Body)
@@ -69,14 +91,14 @@ func getPrices(productArray []Product) []Product {
             fmt.Printf("Error reading response for product: %v - %v\n", product, err)
             continue
         }
-
+		
         var apiResponse float64
         if err := json.Unmarshal(responseBody, &apiResponse); err != nil {
             fmt.Printf("Error parsing JSON for product: %v - %v\n", new_price, err)
             continue
         }
-
-        fmt.Printf("Response for product: %v\n", apiResponse)
+		product.Price = apiResponse
+		productArray[index] = product
     }
 	return productArray
 }

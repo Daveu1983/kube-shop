@@ -12,14 +12,14 @@ func main(){
     price := queryParameters.Get("price")
     if floatPrice, err := strconv.ParseFloat(price, 64); err ==nil {
         title := queryParameters.Get("title")       
-        new_price := getPrice(floatPrice, title)
-        json_price, err := json.Marshal(new_price)
+        newPrice := getPrice(floatPrice, title)
+        jsonPrice, err := json.Marshal(newPrice)
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
         }
         w.Header().Set("Content-Type", "application/json") 
-        w.Write(json_price)
+        w.Write(jsonPrice)
     } else {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
