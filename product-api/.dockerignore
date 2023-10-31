@@ -1,0 +1,19 @@
+# Ignore version control system files
+.git
+
+# Ignore Go binary and object files
+*.exe
+*.o
+*.a
+
+# Ignore editor and IDE files
+.vscode/
+.idea/
+
+# Ignore test files
+*_test.go
+
+# Ignore any files generated during the build process
+/bin/
+/pkg/
+/vendor/
