@@ -16,7 +16,7 @@ class App extends Component {
   }
   
   getProducts(){
-    axios.get('http://localhost:8001/api')
+    axios.get('/api')
       .then(response => {
       let recProducts = response.data;
        this.setState({products:recProducts})
