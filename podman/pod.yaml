@@ -1,0 +1,18 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: kube-shop
+  labels:
+    name: kube-shop
+spec:
+  containers:
+  - name: website
+    image: localhost/kube-shop/frontend:v1
+    ports:
+      - containerPort: 3000
+        hostPort: 3000
+  - name: product-api
+    image: localhost/kube-shop/product-api:v1
+    ports:
+      - containerPort: 8001
+        hostPort: 8001
