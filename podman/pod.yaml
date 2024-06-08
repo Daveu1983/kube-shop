@@ -15,4 +15,3 @@ spec:
     image: localhost/kube-shop/product-api:v1
     ports:
       - containerPort: 8001
-        hostPort: 8001
