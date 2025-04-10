@@ -11,19 +11,20 @@ class App extends Component {
     orders:[],
     truee: true
   }
-  componentWillMount() {
-    this.getProducts();
+
+  componentDidMount() {
+    this.getProducts(); 
   }
-  
-  getProducts(){
-    axios.get('/api')
+
+  getProducts() {
+    axios.get('http://localhost:8001/api')
       .then(response => {
-      let recProducts = response.data;
-       this.setState({products:recProducts})
-       })
-       .catch(function (error) {
-       console.log(error);
-       })
+        let recProducts = response.data;
+        this.setState({products:recProducts})
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   addToOrder= (title, price, quantity, size, colour)=>{
@@ -34,45 +35,42 @@ class App extends Component {
     this.setState({orders:newOrder})
   }
 
-  render(){ 
+  render(){
     return (
       <div>
-      {
-        this.state.products.map((element, index)=>{
-          return  <Products 
-          key={index}
-          title={element.title}
-          description={element.description}
-          price={element.price}
-          quantity={element.quantity}
-          size={element.size}
-          colour={element.colour}
-          addToOrderFunction={this.addToOrder}/>
+        {
+          this.state.products.map((element, index)=>{
+            return  <Products
+              key={index}
+              title={element.title}
+              description={element.description}
+              price={element.price}
+              quantity={element.quantity}
+              size={element.size}
+              colour={element.colour}
+              addToOrderFunction={this.addToOrder}/>
           })
-      } 
-      <div>
-        <h2>ORDERS</h2>
-        <p>-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-                  -----------------------------------------------------------</p>
-      </div>
+        }
+        <div>
+          <h2>ORDERS</h2>
+          <p>-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+            -----------------------------------------------------------</p>
+        </div>
 
-
-      { 
-        this.state.orders.map((element, index)=>{
-          return  <Orders
-          key={index}
-          title={element.title}
-          price={element.price}
-          quantity={element.quantity}
-          size={element.size}
-          colour={element.colour}/>
+        {
+          this.state.orders.map((element, index)=>{
+            return  <Orders
+              key={index}
+              title={element.title}
+              price={element.price}
+              quantity={element.quantity}
+              size={element.size}
+              colour={element.colour}/>
           })
-      }
+        }
       </div>
     );
   }
 }
-
-
 
 export default App;
