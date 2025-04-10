@@ -25,8 +25,16 @@ pipeline:
                   spec:
                     command: echo hello world
                   timeout: ""
-                  type: Run
-          platform:
+              - step:
+                identifier: npm_install
+                name: Install Frontend Dependencies
+                spec:
+                command: |
+                  cd frontend
+                  npm install
+                timeout: ""
+                type: Run
+platform:
             arch: Amd64
             os: Linux
           runtime:
