@@ -20,12 +20,6 @@ pipeline:
           execution:
             steps:
               - step:
-                  identifier: echo
-                  name: echo
-                  spec:
-                    command: echo hello world
-                  timeout: ""
-              - step:
                   identifier: npm_install
                   name: Install Frontend Dependencies
                   spec:
