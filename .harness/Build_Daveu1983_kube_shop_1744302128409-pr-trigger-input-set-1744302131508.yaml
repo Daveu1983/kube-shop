@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_Daveu1983_kube_shop_1744302128409-pr-trigger-input-set
+  identifier: Build_Daveu1983_kube_shop_1744302128409prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_Daveu1983_kube_shop_1744302128409
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
