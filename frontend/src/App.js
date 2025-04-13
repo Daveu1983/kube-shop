@@ -17,13 +17,14 @@ class App extends Component {
   }
 
   getProducts() {
-    axios.get('http://localhost:8001/api')
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8001/api';
+    axios.get(apiUrl)
       .then(response => {
-        let recProducts = response.data;
-        this.setState({products:recProducts})
+      let recProducts = response.data;
+      this.setState({products:recProducts})
       })
       .catch(function (error) {
-        console.log(error);
+      console.log(error);
       });
   }
 
