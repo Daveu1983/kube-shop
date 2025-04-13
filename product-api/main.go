@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 )
 
 type Product struct {
@@ -16,65 +17,77 @@ type Product struct {
 	Size        string  `json:"size"`
 	Colour      string  `json:"colour"`
 }
-
 func main() {
-	productArray := []Product{
-		{
-			Title:       "t-shirt",
-			Description: "funky and loud",
-			Price:       5,
-			Quantity:    0,
-			Size:        "XL",
-			Colour:      "blue",
-		},
-		{
-			Title:       "jumper",
-			Description: "plain pattern",
-			Price:       10,
-			Quantity:    0,
-			Size:        "L",
-			Colour:      "white",
-		},
-		{
-			Title:       "jeans",
-			Description: "straight denim",
-			Price:       15,
-			Quantity:    0,
-			Size:        "32L30W",
-			Colour:      "red",
-		},
-		{
-			Title:       "polo shirt",
-			Description: "plain",
-			Price:       7,
-			Quantity:    0,
-			Size:        "small",
-			Colour:      "purple",
-		},
-	}
+	port := os.Getenv("PORT")
+    if port == "" {
+        port = "8001" // Default value
+    }
 
-	http.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
-		origin := r.Header.Get("Origin")
-		if origin == "http://localhost:3001" {
-			w.Header().Set("Access-Control-Allow-Origin", origin)
-			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		}
-		productArray := getPrices(productArray)
-		jsonProduct, err := json.Marshal(productArray)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(jsonProduct)
-	})
-	http.ListenAndServe(":8001", nil)
+    allowedOrigin := os.Getenv("ALLOWED_ORIGIN")
+    if allowedOrigin == "" {
+        allowedOrigin = "http://localhost:3001" // Default value
+    }
+
+    productArray := []Product{
+        {
+            Title:       "t-shirt",
+            Description: "funky and loud",
+            Price:       5,
+            Quantity:    0,
+            Size:        "XL",
+            Colour:      "blue",
+        },
+        {
+            Title:       "jumper",
+            Description: "plain pattern",
+            Price:       10,
+            Quantity:    0,
+            Size:        "L",
+            Colour:      "white",
+        },
+        {
+            Title:       "jeans",
+            Description: "straight denim",
+            Price:       15,
+            Quantity:    0,
+            Size:        "32L30W",
+            Colour:      "red",
+        },
+        {
+            Title:       "polo shirt",
+            Description: "plain",
+            Price:       7,
+            Quantity:    0,
+            Size:        "small",
+            Colour:      "purple",
+        },
+    }
+
+    http.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
+        origin := r.Header.Get("Origin")
+        if origin == allowedOrigin {
+            w.Header().Set("Access-Control-Allow-Origin", origin)
+            w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+            w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        }
+        productArray := getPrices(productArray)
+        jsonProduct, err := json.Marshal(productArray)
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+        w.Header().Set("Content-Type", "application/json")
+        w.Write(jsonProduct)
+    })
+    http.ListenAndServe(":"+port, nil)
 }
 
 func getPrices(productArray []Product) []Product {
 	new_price := 0
-	apiURL := "http://localhost:5000/api"
+	apiURL := os.Getenv("API_URL")
+	if apiURL == "" {
+		apiURL = "http://localhost:5000/api"
+	}
 	for index, product := range productArray {
 		params := url.Values{
 			"title": {fmt.Sprintf("%s", product.Title)},
