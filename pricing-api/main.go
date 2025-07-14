@@ -10,7 +10,7 @@ import (
 func main(){
     port := os.Getenv("PORT")
     if port == "" {
-        port = "5000" // Default value
+        port = "5000" 
     }
     http.HandleFunc("/api",func(w http.ResponseWriter, r *http.Request){
         queryParameters := r.URL.Query()
@@ -34,17 +34,16 @@ func main(){
 }
 
 func getPrice(price float64, title string ) (float64) {
-    if title == "t-shirt"{
+    switch title {
+    case "t-shirt":
         price = price * 1.05
-    }  else if title == "jumper" {
+    case "jumper":
         price = price * 1.02
-    } else if title == "jeans" {
+    case "jeans":
         price = price * 1.075
-    } else if title == "polo shirt" {
+    case "polo shirt":
         price = price * 1.06
-    } else {
-        price = price
-    }  
+    }
     if price > 100 {
        price = 100
     }
