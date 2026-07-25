@@ -1,9 +1,10 @@
-Ecommerce site made from a number of microservices \
-currently \
+# kube-shop
 
-Frontend - react app \
-product-api - python (FastAPI) app \
-pricing-api - python (FastAPI) app \
+Ecommerce site made from a number of microservices:
+
+- Frontend - react app
+- product-api - python (FastAPI) app
+- pricing-api - python (FastAPI) app
 
 ## Kubernetes deployment
 
