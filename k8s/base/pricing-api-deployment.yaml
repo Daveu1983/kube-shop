@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pricing-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pricing-api
+  template:
+    metadata:
+      labels:
+        app: pricing-api
+    spec:
+      containers:
+        - name: pricing-api
+          image: pricing-api
+          ports:
+            - containerPort: 5000
+          readinessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi

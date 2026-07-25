@@ -1,12 +1,9 @@
-FROM golang:1.24-alpine as builder
-RUN addgroup -S appgroup --gid 1001 && adduser -S appuser --uid 1001 -G appgroup
-RUN mkdir /build
-WORKDIR /build
+FROM python:3.12-slim
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-RUN go build -o main
-
-FROM alpine:3.21
-COPY --from=builder /build/main .
-COPY --from=builder /etc/passwd /etc/passwd
-USER appuser
-ENTRYPOINT [ "./main" ]
+EXPOSE 5000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]

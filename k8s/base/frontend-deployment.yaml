@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: frontend
+          ports:
+            - containerPort: 3001
+          env:
+            - name: LISTEN_PORT
+              value: "3001"
+            - name: SERVER_NAME
+              value: "_"
+            - name: API_PROXY_PASS
+              value: http://product-api:8001
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3001
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi

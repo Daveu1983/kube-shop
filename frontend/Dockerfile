@@ -1,9 +1,12 @@
 FROM docker.io/node:22-alpine AS builder
 WORKDIR /app
-COPY . . 
+COPY . .
 RUN chown -R node:node .
 USER node
-RUN npm install 
+ARG REACT_APP_API_URL=/api
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+ENV DISABLE_ESLINT_PLUGIN=true
+RUN npm install
 RUN npm run build
 
 FROM docker.io/nginxinc/nginx-unprivileged:1.27-alpine
