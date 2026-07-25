@@ -45,4 +45,17 @@ test.describe('adding products to an order', () => {
       .filter({ hasNot: page.getByRole('button', addToOrderButton()) });
     await expect(orderRows).toHaveCount(2);
   });
+
+  test('setting a quantity before adding to order carries that quantity into the order', async ({ page }) => {
+    const productRow = page.locator('.Products').filter({ hasText: 't-shirt' });
+
+    await productRow.getByRole('spinbutton', { name: /quantity/i }).fill('3');
+    await productRow.getByRole('button', addToOrderButton()).click();
+
+    const orderRow = page
+      .locator('.Products')
+      .filter({ hasText: 't-shirt' })
+      .filter({ hasNot: page.getByRole('button', addToOrderButton()) });
+    await expect(orderRow).toContainText('quantity: 3');
+  });
 });

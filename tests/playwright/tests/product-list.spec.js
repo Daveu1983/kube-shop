@@ -22,7 +22,7 @@ test.describe('product listing', () => {
 
     await expect(product).toContainText('funky and loud');
     await expect(product.getByText(/^price: £\d+\.\d{2}$/)).toBeVisible();
-    await expect(product.getByText(/^quantity: \d+$/)).toBeVisible();
+    await expect(product.getByRole('spinbutton', { name: /quantity/i })).toHaveValue('1');
     await expect(product.getByText(/^size: /)).toBeVisible();
     await expect(product.getByText(/^colour: /)).toBeVisible();
     await expect(product.getByRole('button', { name: 'add to order' })).toBeVisible();
