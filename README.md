@@ -18,6 +18,46 @@ Deploy to the dev overlay:
 kubectl apply -k k8s/overlays/dev
 ```
 
+## Log aggregation
+
+Logs from all pods can be aggregated with [Loki](https://grafana.com/oss/loki/), shipped
+by Promtail, and viewed in Grafana. The config for this lives in `k8s/logging/` and is
+installed via the `grafana/loki-stack` Helm chart into a dedicated `logging` namespace
+(kept separate from the Kustomize-managed app manifests since it's a third-party chart,
+not part of kube-shop itself).
+
+Install:
+
+```
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install loki grafana/loki-stack \
+  --version 2.10.3 \
+  -n logging --create-namespace \
+  -f k8s/logging/loki-stack-values.yaml
+```
+
+`k8s/logging/loki-stack-values.yaml` disables persistence and sets small resource
+requests/limits (fine for ephemeral local/dev use - logs are lost if the pods restart),
+exposes Grafana via NodePort, and enables Grafana's sidecar so the Loki datasource is
+auto-provisioned.
+
+Access Grafana:
+
+```
+minikube service loki-grafana -n logging --url
+```
+
+Log in with `admin` / `admin` (set in the values file, for local dev only) and use
+Explore with a LogQL query, e.g. `{namespace="kube-shop"}` or
+`{namespace="kube-shop", app="product-api"}`.
+
+Uninstall:
+
+```
+helm uninstall loki -n logging
+```
+
 ## Testing
 
 Frontend end-to-end tests live under `tests/playwright` (Playwright), covering the

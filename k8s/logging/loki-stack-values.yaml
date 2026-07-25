@@ -1,0 +1,42 @@
+# Values for the grafana/loki-stack Helm chart (Loki + Promtail + Grafana).
+# Tuned for a local minikube dev cluster: no persistent storage, small
+# resource requests/limits, and Grafana exposed via NodePort.
+
+loki:
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+promtail:
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
+grafana:
+  enabled: true
+  adminUser: admin
+  adminPassword: admin
+  service:
+    type: NodePort
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      cpu: 25m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  sidecar:
+    datasources:
+      enabled: true
